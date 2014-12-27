@@ -1,0 +1,50 @@
+#! /usr/bin/env node
+
+var fs = require('graceful-fs');
+
+var commander = require('commander');
+
+var util = require('./src/util');
+
+var processDate = function(date) {
+  return new Date(date);
+};
+var today = new Date();
+
+commander
+  .option('-b, --begin <string>', 'Start of date range, inclusive (Jan 1)',
+    processDate, new Date(today.getFullYear(), 0, 1))
+  .option('-e, --end <string>',
+    'End of date range, inclusive (today\'s date)', processDate, today)
+  .parse(process.argv);
+
+var goBack = function(begin, end) {
+  var day = end, total = 0, journals = 0;
+  console.log('begin: ' + renderDate(begin));
+  console.log('end: ' + renderDate(end));
+
+  while(day.getTime() >= begin.getTime()) {
+    total++;
+
+    if (checkDay(day)) {
+      journals++;
+    }
+
+    day = util.incrementDay(day, -1);
+  }
+
+  console.log((journals / total * 100).toFixed(2) + '%',
+    '(' + journals + ' of ' + total + ' days)');
+};
+
+var checkDay = function(date) {
+  var file = util.getPath(date);
+
+  return fs.existsSync(file);
+};
+
+var renderDate = function(date) {
+  return util.shortDate(date) + ' (' + util.dayOfWeek(date) + ')';
+};
+
+goBack(commander.begin, commander.end);

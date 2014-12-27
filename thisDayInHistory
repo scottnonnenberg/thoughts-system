@@ -1,0 +1,125 @@
+#! /usr/bin/env node
+
+var path = require('path');
+var exec = require('child_process').exec;
+var fs = require('graceful-fs');
+
+var _ = require('lodash');
+var commander = require('commander');
+
+var util = require('./src/util');
+
+var defaultDate = function() {
+  var date = new Date();
+  var year = date.getFullYear();
+
+  year -= 1;
+
+  return util.setYear(date, year);
+};
+
+commander
+  .option('-d, --date <date>', 'Date to check in previous years (today\'s date)',
+    function(date) { return new Date(date); }, defaultDate())
+  .option('-b, --back <n>', 'How many days to look back from the initial date (0)',
+    parseInt, 0)
+  .option('-f, --forward <n>', 'How many days to look forward from the initial date (0)',
+    parseInt, 0)
+  .option('-e, --editor', 'Open editor with the found files (don\'t open editor)')
+  .option('-x, --extras', 'Look for extras - log and week files (don\'t look for extras)')
+  .parse(process.argv);
+
+var renderDate = function(date) {
+  return util.shortDate(date) + ' (' + util.dayOfWeek(date) + ')';
+};
+
+var checkYear = function(today, year) {
+  var day, thisYear = util.setYear(today, year);
+
+  if (checkDay(thisYear, 0)) {
+    return;
+  }
+
+  if (commander.back > 0) {
+    for (var d = 1; d <= commander.back; d++) {
+      day = util.incrementDay(thisYear, -1 * d);
+
+      if (checkDay(day, d, 'back')) {
+        return;
+      }
+    }
+  }
+
+  if (commander.forward > 0) {
+    for (var d = 1; d <= commander.forward; d++) {
+      day = util.incrementDay(thisYear, 1 * d);
+
+      if (checkDay(day, d, 'forward')) {
+        return;
+      }
+    }
+  }
+};
+
+var checkDay = function(date, count, label) {
+  var file = util.getPath(date);
+  var message = renderDate(date);
+  var result = false;
+
+  if (count !== 0) {
+    message += ' (' + count + ' days ' + label + ')';
+  }
+
+  if (commander.extras) {
+
+    var extra = util.getMonthPath(date);
+    if (fs.existsSync(extra)) {
+      message += ' [month]';
+      files.push(extra);
+      result = true;
+    }
+
+    extra = util.getWeekPath(date);
+    if (fs.existsSync(extra)) {
+      message += ' [week]';
+      files.push(extra);
+      result = true;
+    }
+
+    extra = util.getLogPath(date);
+    if (fs.existsSync(extra)) {
+      message += ' [log]';
+      files.push(extra);
+      result = true;
+    }
+
+  }
+
+  if (fs.existsSync(file)) {
+    files.push(file);
+    result = true;
+  }
+  else {
+    message += ' [no journal]';
+  }
+
+  if (result) {
+    console.log(message);
+  }
+
+  return result;
+};
+
+var date = commander.date;
+var files = [];
+
+for (var year = date.getFullYear(); year >= 1997; year--) {
+  checkYear(date, year);
+}
+
+if (commander.editor) {
+  exec('subl .');
+  setTimeout(function() {
+    exec('subl ' + files.join(' '));
+  }, 500);
+}

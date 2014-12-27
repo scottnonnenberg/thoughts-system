@@ -1,0 +1,29 @@
+#! /usr/bin/env node
+
+var fs = require('graceful-fs');
+
+var util = require('./src/util');
+
+var goBack = function(day) {
+  var count = 0;
+
+  while(checkDay(day)) {
+    ++count;
+    day = util.incrementDay(day, -1);
+  }
+
+  console.log(count + ' days in a row!');
+};
+
+var checkDay = function(date) {
+  var file = util.getPath(date);
+
+  if (fs.existsSync(file)) {
+    return true;
+  }
+
+  return false;
+};
+
+var today = new Date();
+goBack(today);

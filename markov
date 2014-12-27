@@ -1,0 +1,21 @@
+#! /usr/bin/env node
+
+var markov = require('markov');
+var fs = require('graceful-fs');
+
+var util = require('./src/util')
+
+var file = process.argv[2], start = process.argv[3];
+if (!start) {
+  start = file;
+  file = util.getPath(new Date());
+}
+
+var seed = fs.readFileSync(file);
+var m = markov();
+
+m.seed(seed, function() {
+  for (var x = 0; x < 20; x++) {
+    console.log(m.respond("what is the meaning of life?", 20).join(' '));
+  }
+});

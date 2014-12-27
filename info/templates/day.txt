@@ -1,0 +1,5 @@
+[ ] Journal
+[ ] What's the most important thing I need to get done today?
+
+[ ] Email->0
+[ ] Review calendar for day, confirm all appointments

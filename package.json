@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "commander": "2.5.1",
+    "graceful-fs": "3.0.5",
+    "lodash": "2.4.1",
+    "markov": "0.0.7",
+    "moment": "2.8.4",
+    "ridict": "0.0.1"
+  }
+}

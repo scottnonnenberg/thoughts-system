@@ -1,0 +1,23 @@
+#! /usr/bin/env node
+
+var ridict = require('ridict');
+var fs = require('graceful-fs');
+var _ = require('lodash');
+
+var util = require('./src/util')
+
+var file = process.argv[2] || util.getPath(new Date());
+var data = fs.readFileSync(file);
+var matches = ridict.matches(data);
+
+matches = _(matches)
+  .pairs()
+  .sortBy(function(item) {
+    return item[1];
+  })
+  .map(function(item) {
+    return item[0] + ': ' + item[1];
+  })
+  .join('\n');
+
+console.log(matches);
