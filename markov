@@ -15,7 +15,8 @@ var seed = fs.readFileSync(file);
 var m = markov();
 
 m.seed(seed, function() {
-  for (var x = 0; x < 20; x++) {
-    console.log(m.respond("what is the meaning of life?", 20).join(' '));
-  }
+  var response = m.respond("what is the meaning of life?", 25).join(' ');
+  var firstPeriod = response.lastIndexOf('.');
+  response = response.slice(0, firstPeriod + 1);
+  console.log(response);
 });
