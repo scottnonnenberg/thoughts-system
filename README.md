@@ -58,7 +58,7 @@ npm install
 
 ## Lastly
 
-This has been tested only on OSX with [Sublime Text](http://www.sublimetext.com/) as the editor. Happy hunting!
+This has been tested only on OSX with [Sublime Text](http://www.sublimetext.com/) as the editor. Good luck elsewhere!
 
 ## License
 
