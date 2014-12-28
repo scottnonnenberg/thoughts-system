@@ -27,7 +27,7 @@ Now, start your first journal:
 ./journal.sh
 ```
 
-You should see a nice, new journal file with the day of the week and start time at the top. Add some of your thoughts. You might consider installing a word count tool in your editor of choice. It is recommended that morning pages be about three pages, or about 750 words (thanks, [Buster](http://www.forbes.com/sites/jasonoberholtzer/2011/03/30/internet-transparency-a-chat-with-buster-benson/)).
+You should see a nice, new journal file in your editor with the day of the week and start time at the top, generated to `YYYY/MM-MONTH/YYYYMMDD.txt`. Add some of your thoughts. You might consider installing a word count tool in your editor of choice. It is recommended that morning pages be about three pages, or about 750 words (thanks, [Buster](http://www.forbes.com/sites/jasonoberholtzer/2011/03/30/internet-transparency-a-chat-with-buster-benson/)).
 
 Now you can start using some of the analysis tools. You'll need [`node.js`](http://nodejs.org/) installed to use them...
 
