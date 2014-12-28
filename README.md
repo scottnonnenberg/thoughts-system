@@ -41,21 +41,23 @@ npm install
 ./rateOfJournals
 ```
 
-## All scripts:
+## Generation scripts:
 
-* `commit.sh` - adds all changes in the repo and then commits it with the message 'autocommit for <date>'. I use this in a cron task to commit my changes every half-hour.
-* `emotions` - uses the [Regressive Imagery Dictionary](http://enjoymentland.com/2010/01/11/the-regressive-imagery-dictionary/) ([via `ridict` node module](https://github.com/frankamp/node-ridict)) to analyze today's journal entry. Or, you can provide a path to a file as the first argument.
-* `journal.sh` - generates a journal entry file for today an opens it, or opens today's if it already exists
 * `log.sh` - generates a log file for today and opens it, or opens today's if it already exists
-* `markov` - generates a markov chain-based gibberish string based on today's journal entry ([via `markov` node module](https://github.com/substack/node-markov))
-* `month.sh` - generates a monthly review file for this month then opens it, or opens the existing file
-* `rateOfJournals` - by default, calculates the percentage of journal entries so far this year. Use `--help` for more options.
-* `streak` - starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
-* `thisDayInHistory` - with no arguments, lists all the journals on this day of the year, as far back as 1997. Use `--help` for more options.
+* `journal.sh` - generates a journal entry file for today an opens it, or opens today's if it already exists
 * `week.sh` - generates a weekly goals file and opens it, or generates a new one. If today is a monday, creates it for this week. If not, the weekly file for next week will be created.
+* `month.sh` - generates a monthly review file for this month then opens it, or opens the existing file
+
+## Analysis scripts:
+* `streak` - starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
+* `rateOfJournals` - by default, calculates the percentage of journal entries so far this year. Use `--help` for more options.
+* `thisDayInHistory` - with no arguments, lists all the journals on this day of the year, as far back as 1997. Use `--help` for more options.
+* `emotions` - uses the [Regressive Imagery Dictionary](http://enjoymentland.com/2010/01/11/the-regressive-imagery-dictionary/) ([via `ridict` node module](https://github.com/frankamp/node-ridict)) to analyze today's journal entry. Or, you can provide a path to a file as the first argument.
+* `markov` - generates a markov chain-based gibberish string based on today's journal entry ([via `markov` node module](https://github.com/substack/node-markov))
 
 ## Other files:
 
+* `commit.sh` - adds all changes in the repo and then commits it with the message 'autocommit for <date>'. I use this in a cron task to commit my changes every half-hour.
 * `info` - I use this for all sort of reference information. It starts with the three templates: `day.txt`, `week.txt`, `month.txt`
 * `src` - javascript source
 * `package.json` - node.js dependency list
