@@ -1,6 +1,11 @@
 # thoughts-system
 
-This is my [system for keeping track of thoughts and goals](https://blog.scottnonnenberg.com/resolutions-and-systems/). Local text files, tracked with Git, easily scripted against. Journaling (or [morning pages](http://www.theguardian.com/lifeandstyle/2014/oct/03/morning-pages-change-your-life-oliver-burkeman)), a daily log of tasks and achievements (try using this as your 'home' page instead of your email inbox), weekly goals, and monthly reviews.
+This is my [system for keeping track of thoughts and goals](https://blog.scottnonnenberg.com/resolutions-and-systems/). Local text files, tracked with git, and scripts to analyze/generate them (bash and node.js). All to support:
+
+* journaling (or [morning pages](http://www.theguardian.com/lifeandstyle/2014/oct/03/morning-pages-change-your-life-oliver-burkeman))
+* daily logs of tasks and achievements (try using this as your 'home' page instead of your email inbox)
+* weekly goals
+* monthly reviews
 
 ## Getting Started
 
