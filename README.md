@@ -49,11 +49,23 @@ npm install
 * `month.sh` - generates a monthly review file for this month then opens it, or opens the existing file
 
 ## Analysis scripts:
-* `streak` - starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
-* `rateOfJournals` - by default, calculates the percentage of journal entries so far this year. Use `--help` for more options.
-* `thisDayInHistory` - with no arguments, lists all the journals on this day of the year, as far back as 1997. Use `--help` for more options.
+* `streak` - (supports `--help`) starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
+* `rateOfJournals` - (supports `--help`) by default, calculates the percentage of journal entries so far this year.
+* `thisDayInHistory` - (supports `--help`) with no arguments, lists all the journals on this day of the year, as far back as 1997.
 * `emotions` - uses the [Regressive Imagery Dictionary](http://enjoymentland.com/2010/01/11/the-regressive-imagery-dictionary/) ([via `ridict` node module](https://github.com/frankamp/node-ridict)) to analyze today's journal entry. Or, you can provide a path to a file as the first argument.
 * `markov` - generates a markov chain-based gibberish string based on today's journal entry ([via `markov` node module](https://github.com/substack/node-markov))
+* `dayOfWeekInHistory` - (supports `--help`) fun little script that tells you the day of week in history for this date
+* `thisDayInCommits` - (supports `--help`) looks at the set of repos you provide via a config file for all commits from this day in history, by default filtered to your git user name. The config file should be an array of objects like this:
+
+```JSON
+[{
+  "name": "Thoughts System",
+  "location": "/Users/username/thoughts-system"
+},{
+  "name": "Other project"
+  "location": "/Users/username/dev/other"
+}]
+```
 
 ## Other files:
 
