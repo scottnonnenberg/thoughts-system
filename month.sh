@@ -5,11 +5,20 @@ set -e
 DIR=`dirname $0`
 pushd ${DIR} > /dev/null
 
+DATE_FORMAT=" -f %F"
+PROVIDED_DATE=$1
 
-YEAR="`date "+%Y"`"
-MONTH="`date "+%B"`"
-MONTH_NUMBER="`date "+%m"`"
-MONTH_DIR="`src/make_month_dir.sh`"
+# date doesn't like the f option provided if no date is provided as well
+if [ -z "${PROVIDED_DATE}" ] ; then
+
+DATE_FORMAT=""
+
+fi
+
+YEAR="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%Y"`"
+MONTH="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%B"`"
+MONTH_NUMBER="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%m"`"
+MONTH_DIR="`src/make_month_dir.sh` ${PROVIDED_DATE}"
 
 FILE="${MONTH_DIR}${YEAR}${MONTH_NUMBER}review.txt"
 

@@ -5,12 +5,13 @@ set -e
 DIR=`dirname $0`
 pushd ${DIR} > /dev/null
 
+# TODO: combine -v+mon with a user-provided date
 
 DIR="`src/make_month_dir.sh '-v+mon'`"
-DATEFORMAT=`date -v+mon "+%Y%m%d"`
+DATEFORMAT=`date -j -v+mon "+%Y%m%d"`
 FILE="${DIR}${DATEFORMAT}week.txt"
-DAY="`date -v+mon "+%A"`"
-WEEKOF="Week of `date -v+mon "+%Y/%m/%d"`"
+DAY="`date -j -v+mon "+%A"`"
+WEEKOF="Week of `date -j -v+mon "+%Y/%m/%d"`"
 
 
 # if the log file doesn't exist, we'll create it

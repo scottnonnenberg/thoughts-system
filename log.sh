@@ -5,11 +5,20 @@ set -e
 DIR=`dirname $0`
 pushd ${DIR} > /dev/null
 
+DATE_FORMAT=" -f %F"
+PROVIDED_DATE=$1
 
-MONTH_DIR="`src/make_month_dir.sh`"
-DATEFORMAT=`date "+%Y%m%d"`
-FILE="${MONTH_DIR}${DATEFORMAT}log.txt"
-DAY="`date "+%A"`"
+# date doesn't like the f option provided if no date is provided as well
+if [ -z "${PROVIDED_DATE}" ] ; then
+
+DATE_FORMAT=""
+
+fi
+
+MONTH_DIR="`src/make_month_dir.sh ${PROVIDED_DATE}`"
+DATE_STRING=`date -j ${DATE_FORMAT} ${PROVIDED_DATE} "+%Y%m%d"`
+FILE="${MONTH_DIR}${DATE_STRING}log.txt"
+DAY="`date -j ${DATE_FORMAT} ${PROVIDED_DATE} "+%A"`"
 
 
 # if the log file doesn't exist, we'll create it
