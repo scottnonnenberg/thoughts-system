@@ -9,24 +9,16 @@ var commander = require('commander');
 
 var util = require('./src/util');
 
-var defaultDate = function() {
-  var date = new Date();
-  var year = date.getFullYear();
-
-  year -= 1;
-
-  return util.setYear(date, year);
-};
-
 commander
-  .option('-d, --date <date>', 'Date to check in previous years (today\'s date)',
-    function(date) { return new Date(date); }, defaultDate())
+  .option('-d, --date <date>', 'Date to check (today, starting last year)',
+    function(date) { return new Date(date); }, util.defaultDate())
   .option('-b, --back <n>', 'How many days to look back from the initial date (0)',
     parseInt, 0)
   .option('-f, --forward <n>', 'How many days to look forward from the initial date (0)',
     parseInt, 0)
   .option('-e, --editor', 'Open editor with the found files (don\'t open editor)')
   .option('-x, --extras', 'Look for extras - log and week files (don\'t look for extras)')
+  .option('-m, --month', 'Look for monthly reviews (don\'t look for monthly reviews)')
   .parse(process.argv);
 
 var renderDate = function(date) {
@@ -70,15 +62,16 @@ var checkDay = function(date, count, label) {
     message += ' (' + count + ' days ' + label + ')';
   }
 
-  if (commander.extras) {
-
+  if (commander.month) {
     var extra = util.getMonthPath(date);
     if (fs.existsSync(extra)) {
       message += ' [month]';
       files.push(extra);
       result = true;
     }
+  }
 
+  if (commander.extras) {
     extra = util.getWeekPath(date);
     if (fs.existsSync(extra)) {
       message += ' [week]';

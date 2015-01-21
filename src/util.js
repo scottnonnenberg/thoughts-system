@@ -2,7 +2,16 @@
 var path = require('path');
 var moment = require('moment');
 
-exports.shortDate = function(date) {
+exports.defaultDate = function defaultDate() {
+  var date = new Date();
+  var year = date.getFullYear();
+
+  year -= 1;
+
+  return exports.setYear(date, year);
+};
+
+exports.shortDate = function shortDate(date) {
   var now = new Date();
 
   if (date.getFullYear() === now.getFullYear()) {
