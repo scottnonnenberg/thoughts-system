@@ -48,6 +48,8 @@ npm install
 * `week.sh` - generates a weekly goals file and opens it, or generates a new one. If today is a monday, creates it for this week. If not, the weekly file for next week will be created.
 * `month.sh` - generates a monthly review file for this month then opens it, or opens the existing file
 
+_Note: all of these but `week.sh` support a date as the first parameter, in the form `2014-06-23`_
+
 ## Analysis scripts:
 * `streak` - (supports `--help`) starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
 * `rateOfJournals` - (supports `--help`) by default, calculates the percentage of journal entries so far this year.
