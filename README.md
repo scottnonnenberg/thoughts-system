@@ -64,7 +64,7 @@ _Note: all of these but `week.sh` support a date as the first parameter, in the 
   "name": "Thoughts System",
   "location": "/Users/username/thoughts-system"
 },{
-  "name": "Other project"
+  "name": "Other project",
   "location": "/Users/username/dev/other"
 }]
 ```
