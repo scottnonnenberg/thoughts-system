@@ -1,0 +1,32 @@
+#! /usr/bin/env node
+
+var path = require('path');
+var exec = require('child_process').exec;
+var fs = require('graceful-fs');
+var chalk = require('chalk');
+
+var _ = require('lodash');
+var commander = require('commander');
+
+var util = require('./src/util');
+
+commander
+  .option('-d, --date <date>', 'Date to check (today, starting last year)',
+    function(date) { return new Date(date); }, new Date())
+  .option('-y, --year <number>', 'How far back to go (1997)',
+    function(value) { return parseInt(value, 10) }, 1997)
+  .parse(process.argv);
+
+var date = commander.date;
+var minYear = commander.year;
+
+console.log(chalk.bold(util.shortDate(date)));
+
+for (var year = date.getFullYear(); year >= minYear; year--) {
+  var target = util.setYear(date, year);
+  var day = util.dayOfWeek(target);
+  if (day !== 'Saturday' && day !== 'Sunday') {
+    day = chalk.blue(day);
+  }
+  console.log(target.getFullYear() + ': ' + day);
+}
