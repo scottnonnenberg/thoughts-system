@@ -1,10 +1,20 @@
 #! /usr/bin/env node
 
+// TODO:
+//   option to check how many days it's been a streak of no journals... -n option?
+
 var fs = require('graceful-fs');
+var commander = require('commander');
 
 var util = require('./src/util');
 
-var goBack = function(day) {
+commander
+  .option('-d, --date <date>', 'Date to start with (today)',
+    function(date) { return new Date(date); }, new Date())
+  .parse(process.argv);
+
+var goBack = function(start, check) {
+  var day = start;
   var count = 0;
 
   while(checkDay(day)) {
@@ -25,5 +35,4 @@ var checkDay = function(date) {
   return false;
 };
 
-var today = new Date();
-goBack(today);
+goBack(commander.date, checkDay);
