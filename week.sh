@@ -7,7 +7,7 @@ pushd ${DIR} > /dev/null
 
 # TODO: combine -v+mon with a user-provided date
 
-DIR="`src/make_month_dir.sh '-v+mon'`"
+DIR="`src/make_month_dir.sh -v+mon`"
 DATEFORMAT=`date -j -v+mon "+%Y%m%d"`
 FILE="${DIR}${DATEFORMAT}week.txt"
 DAY="`date -j -v+mon "+%A"`"
