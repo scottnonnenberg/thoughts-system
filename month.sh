@@ -18,7 +18,7 @@ fi
 YEAR="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%Y"`"
 MONTH="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%B"`"
 MONTH_NUMBER="`date ${DATE_FORMAT} ${PROVIDED_DATE} "+%m"`"
-MONTH_DIR="`src/make_month_dir.sh` ${PROVIDED_DATE}"
+MONTH_DIR="`src/make_month_dir.sh ${PROVIDED_DATE}`"
 
 FILE="${MONTH_DIR}${YEAR}${MONTH_NUMBER}review.txt"
 
