@@ -3,7 +3,7 @@
     "async": "0.9.0",
     "chalk": "0.5.1",
     "commander": "2.5.1",
-    "git": "0.1.5",
+    "git": "git+ssh://git@github.com:scottnonnenberg/node-git.git#last-line",
     "graceful-fs": "3.0.5",
     "lodash": "2.4.1",
     "markov": "0.0.7",
