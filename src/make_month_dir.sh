@@ -5,7 +5,7 @@ DATE_FORMAT=" -f %F"
 PROVIDED_DATE=$1
 
 # date doesn't like the f option provided if no date is provided as well
-if [ "${PROVIDED_DATE}" == "-v+mon" ] || [ -z "${PROVIDED_DATE}" ] ; then
+if [ -z "${PROVIDED_DATE}" ] ; then
 
 DATE_FORMAT=""
 
