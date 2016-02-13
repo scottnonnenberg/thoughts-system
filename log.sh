@@ -19,7 +19,7 @@ MONTH_DIR="`src/make_month_dir.sh ${PROVIDED_DATE}`"
 DATE_STRING=`date -j ${DATE_FORMAT} ${PROVIDED_DATE} "+%Y%m%d"`
 FILE="${MONTH_DIR}${DATE_STRING}log.txt"
 DAY="`date -j ${DATE_FORMAT} ${PROVIDED_DATE} "+%A"`"
-
+MANTRA=`./getMantra.sh`
 
 # if the log file doesn't exist, we'll create it
 if [ ! -f "${FILE}" ] ; then
@@ -27,6 +27,8 @@ if [ ! -f "${FILE}" ] ; then
 # first add day to the top
 cat <<EOF > ${FILE}
 ${DAY}
+
+Today's mantra: ${MANTRA}
 
 EOF
 
