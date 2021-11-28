@@ -2,6 +2,15 @@
 var path = require('path');
 var moment = require('moment');
 
+exports.importDate = function(dateStr) {
+  return moment(dateStr).toDate();
+}
+
+exports.normalizeDate = function(date) {
+  const dateStr = moment(date).format('YYYY-MM-DD');
+  return exports.importDate(dateStr);
+}
+
 exports.defaultDate = function defaultDate() {
   var date = new Date();
   var year = date.getFullYear();

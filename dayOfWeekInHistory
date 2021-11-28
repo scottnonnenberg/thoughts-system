@@ -12,7 +12,7 @@ var util = require('./src/util');
 
 commander
   .option('-d, --date <date>', 'Date to check (today, starting last year)',
-    function(date) { return new Date(date); }, new Date())
+    util.importDate, new Date())
   .option('-y, --year <number>', 'How far back to go (1997)',
     function(value) { return parseInt(value, 10) }, 1997)
   .parse(process.argv);

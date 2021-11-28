@@ -11,7 +11,7 @@ var util = require('./src/util');
 
 commander
   .option('-d, --date <date>', 'Date to check (today, starting last year)',
-    function(date) { return new Date(date); }, util.defaultDate())
+    util.importDate, util.defaultDate())
   .option('-b, --back <n>', 'How many days to look back from the initial date (0)',
     parseInt, 0)
   .option('-f, --forward <n>', 'How many days to look forward from the initial date (0)',

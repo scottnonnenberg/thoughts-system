@@ -7,7 +7,7 @@ var commander = require('commander');
 var util = require('./src/util');
 
 var processDate = function(date) {
-  return new Date(date);
+  return util.importDate(date);
 };
 var today = new Date();
 
