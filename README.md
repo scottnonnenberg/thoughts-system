@@ -5,7 +5,7 @@ This is my [system for keeping track of thoughts and goals](https://blog.scottno
 * journaling (or [morning pages](http://www.theguardian.com/lifeandstyle/2014/oct/03/morning-pages-change-your-life-oliver-burkeman))
 * daily logs of tasks and achievements (try using this as your 'home' page instead of your email inbox)
 * weekly goals
-* monthly reviews
+* monthly and yearly reviews
 
 ## Getting Started
 
@@ -45,10 +45,11 @@ npm install
 
 * `log.sh` - generates a log file for today and opens it, or opens today's if it already exists
 * `journal.sh` - generates a journal entry file for today an opens it, or opens today's if it already exists
-* `week.sh` - generates a weekly goals file and opens it, or generates a new one. If today is a monday, creates it for this week. If not, the weekly file for next week will be created.
+* `week.sh` and `nextWeek.sh` - generates a weekly goals file and opens it, or generates a new one. If today is a monday, creates it for this week. If not, the weekly file for next week will be created.
 * `month.sh` - generates a monthly review file for this month then opens it, or opens the existing file
+* `year.sh` - generates a file for a yearly review, using monthly review as template
 
-_Note: all of these but `week.sh` support a date as the first parameter, in the form `2014-06-23`_
+_Note: all of these support a date as the first parameter, in the form `2014-06-23`_
 
 ## Analysis scripts:
 * `streak` - (supports `--help`) starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
@@ -57,17 +58,6 @@ _Note: all of these but `week.sh` support a date as the first parameter, in the 
 * `emotions` - uses the [Regressive Imagery Dictionary](http://enjoymentland.com/2010/01/11/the-regressive-imagery-dictionary/) ([via `ridict` node module](https://github.com/frankamp/node-ridict)) to analyze today's journal entry. Or, you can provide a path to a file as the first argument.
 * `markov` - generates a markov chain-based gibberish string based on today's journal entry ([via `markov` node module](https://github.com/substack/node-markov))
 * `dayOfWeekInHistory` - (supports `--help`) fun little script that tells you the day of week in history for this date
-* `thisDayInCommits` - (supports `--help`) looks at the set of repos you provide via a config file for all commits from this day in history, by default filtered to your git user name. The config file should be an array of objects like this:
-
-```JSON
-[{
-  "name": "Thoughts System",
-  "location": "/Users/username/thoughts-system"
-},{
-  "name": "Other project",
-  "location": "/Users/username/dev/other"
-}]
-```
 
 ## Other files:
 
@@ -75,11 +65,6 @@ _Note: all of these but `week.sh` support a date as the first parameter, in the 
 * `info` - I use this for all sort of reference information. It starts with the three templates: `day.txt`, `week.txt`, `month.txt`
 * `src` - javascript source
 * `package.json` - node.js dependency list
-* `thoughts.sublime-project` - if you use Sublime Text, this is a handy little starter project
-
-## Lastly
-
-This has been tested only on OSX with [Sublime Text](http://www.sublimetext.com/) as the editor. Good luck elsewhere!
 
 ## License
 
