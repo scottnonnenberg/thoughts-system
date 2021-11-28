@@ -15,15 +15,24 @@ commander
   .option('-b, --begin <string>', 'Start of date range, inclusive (Jan 1)',
     processDate, new Date(today.getFullYear(), 0, 1))
   .option('-e, --end <string>',
-    'End of date range, inclusive (today\'s date)', processDate, today)
+    'End of date range, inclusive (today)', processDate, new Date())
+  .option('-y, --year',
+    'Make end date automatically the end of the year', false)
   .parse(process.argv);
 
-var goBack = function(begin, end) {
+const options = commander.opts();
+
+var goBack = function(begin, end, year) {
+  if (year) {
+    end = new Date(today.getFullYear(), 11, 31)
+  }
+
   var day = end, total = 0, journals = 0;
+
   console.log('begin: ' + renderDate(begin));
   console.log('end: ' + renderDate(end));
 
-  while(day.getTime() >= begin.getTime()) {
+  while (day.getTime() >= begin.getTime()) {
     total++;
 
     if (checkDay(day)) {
@@ -33,8 +42,11 @@ var goBack = function(begin, end) {
     day = util.incrementDay(day, -1);
   }
 
-  console.log((journals / total * 100).toFixed(2) + '%',
-    '(' + journals + ' of ' + total + ' days)');
+  var percent = (journals / total * 100).toFixed(2);
+  console.log(
+    percent + '%',
+    '(' + journals + ' of ' + total + ' days)'
+  );
 };
 
 var checkDay = function(date) {
@@ -47,4 +59,4 @@ var renderDate = function(date) {
   return util.shortDate(date) + ' (' + util.dayOfWeek(date) + ')';
 };
 
-goBack(commander.begin, commander.end);
+goBack(options.begin, options.end, options.year);

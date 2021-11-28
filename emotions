@@ -11,7 +11,7 @@ var data = fs.readFileSync(file);
 var matches = ridict.matches(data);
 
 matches = _(matches)
-  .pairs()
+  .toPairs()
   .sortBy(function(item) {
     return item[1];
   })

@@ -17,8 +17,9 @@ commander
     function(value) { return parseInt(value, 10) }, 1997)
   .parse(process.argv);
 
-var date = commander.date;
-var minYear = commander.year;
+var options = commander.opts();
+var date = options.date;
+var minYear = options.year;
 
 console.log(chalk.bold(util.shortDate(date)));
 

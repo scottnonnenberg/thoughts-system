@@ -157,6 +157,14 @@ exports.getMonthPath = function getMonthPath(date) {
   return path.join(c.year.toString(), month, file);
 };
 
+
+exports.getYearReview = function getYearReview(date) {
+  var c = exports.getDateComponents(date);
+  var file = c.year + 'review.txt';
+
+  return path.join(c.year.toString(), file);
+};
+
 exports.setYear = function setYear(date, year) {
   return new Date(year, date.getMonth(), date.getDate());
 };

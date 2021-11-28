@@ -7,11 +7,17 @@ var fs = require('graceful-fs');
 var commander = require('commander');
 
 var util = require('./src/util');
+var processDate = function(date) {
+  return util.importDate(date);
+};
 
 commander
-  .option('-d, --date <date>', 'Date to start with (today)',
-    function(date) { return new Date(date); }, new Date())
+  .option('-d, --date <date>', 'Date to start with (today)', processDate, util.normalizeDate(new Date()))
+  .option('-v, --verbose', 'Show details of processing', false)
+  .option('-y, --yesterday', 'Start date yesterdauy', false)
   .parse(process.argv);
+
+const options = commander.opts();
 
 var goBack = function(start, check) {
   var day = start;
@@ -19,6 +25,9 @@ var goBack = function(start, check) {
 
   while(checkDay(day)) {
     ++count;
+    if (options.verbose) {
+      console.log(day);
+    }
     day = util.incrementDay(day, -1);
   }
 
@@ -35,4 +44,6 @@ var checkDay = function(date) {
   return false;
 };
 
-goBack(commander.date, checkDay);
+var date = options.yesterday ? util.incrementDay(util.normalizeDate(new Date()), -1) : options.date;
+
+goBack(date, checkDay);

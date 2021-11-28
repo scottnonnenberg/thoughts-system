@@ -12,14 +12,18 @@ var util = require('./src/util');
 commander
   .option('-d, --date <date>', 'Date to check (today, starting last year)',
     util.importDate, util.defaultDate())
+  .option('-e, --editor', 'Open editor with the found files (don\'t open editor)')
   .option('-b, --back <n>', 'How many days to look back from the initial date (0)',
     parseInt, 0)
   .option('-f, --forward <n>', 'How many days to look forward from the initial date (0)',
     parseInt, 0)
-  .option('-e, --editor', 'Open editor with the found files (don\'t open editor)')
+  .option('-j, --journal', 'Look for daily journals (don\'t look for daily journals)')
   .option('-x, --extras', 'Look for extras - log and week files (don\'t look for extras)')
   .option('-m, --month', 'Look for monthly reviews (don\'t look for monthly reviews)')
+  .option('-y, --year', 'Look for yearly review (don\'t look for yearly reviews)')
   .parse(process.argv);
+
+const options = commander.opts();
 
 var renderDate = function(date) {
   return util.shortDate(date) + ' (' + util.dayOfWeek(date) + ')';
@@ -28,12 +32,19 @@ var renderDate = function(date) {
 var checkYear = function(today, year) {
   var day, thisYear = util.setYear(today, year);
 
+  if (options.year) {
+    var review = util.getYearReview(thisYear);
+    if (fs.existsSync(review)) {
+      files.push(review);
+    }
+  }
+
   if (checkDay(thisYear, 0)) {
     return;
   }
 
-  if (commander.back > 0) {
-    for (var d = 1; d <= commander.back; d++) {
+  if (options.back > 0) {
+    for (var d = 1; d <= options.back; d++) {
       day = util.incrementDay(thisYear, -1 * d);
 
       if (checkDay(day, d, 'back')) {
@@ -42,8 +53,8 @@ var checkYear = function(today, year) {
     }
   }
 
-  if (commander.forward > 0) {
-    for (var d = 1; d <= commander.forward; d++) {
+  if (options.forward > 0) {
+    for (var d = 1; d <= options.forward; d++) {
       day = util.incrementDay(thisYear, 1 * d);
 
       if (checkDay(day, d, 'forward')) {
@@ -62,7 +73,7 @@ var checkDay = function(date, count, label) {
     message += ' (' + count + ' days ' + label + ')';
   }
 
-  if (commander.month) {
+  if (options.month) {
     var extra = util.getMonthPath(date);
     if (fs.existsSync(extra)) {
       message += ' [month]';
@@ -71,7 +82,7 @@ var checkDay = function(date, count, label) {
     }
   }
 
-  if (commander.extras) {
+  if (options.extras) {
     extra = util.getWeekPath(date);
     if (fs.existsSync(extra)) {
       message += ' [week]';
@@ -88,12 +99,14 @@ var checkDay = function(date, count, label) {
 
   }
 
-  if (fs.existsSync(file)) {
-    files.push(file);
-    result = true;
-  }
-  else {
-    message += ' [no journal]';
+  if (options.journal) {
+    if (fs.existsSync(file)) {
+      files.push(file);
+      result = true;
+    }
+    else {
+      message += ' [no journal]';
+    }
   }
 
   if (result) {
@@ -103,14 +116,14 @@ var checkDay = function(date, count, label) {
   return result;
 };
 
-var date = commander.date;
+var date = options.date;
 var files = [];
 
 for (var year = date.getFullYear(); year >= 1997; year--) {
   checkYear(date, year);
 }
 
-if (commander.editor) {
+if (options.editor) {
   exec('subl .');
   setTimeout(function() {
     exec('subl ' + files.join(' '));

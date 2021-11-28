@@ -1,14 +1,11 @@
 {
   "dependencies": {
-    "async": "0.9.0",
-    "chalk": "0.5.1",
-    "commander": "2.5.1",
-    "git": "git+ssh://git@github.com:scottnonnenberg/node-git.git#last-line",
-    "graceful-fs": "3.0.5",
-    "lodash": "2.4.1",
+    "chalk": "4.1.0",
+    "commander": "8.3.0",
+    "graceful-fs": "4.2.8",
+    "lodash": "4.17.21",
     "markov": "0.0.7",
-    "moment": "2.8.4",
-    "ridict": "0.0.1",
-    "thehelp-core": "2.1.0"
+    "moment": "2.29.1",
+    "ridict": "0.0.1"
   }
 }
