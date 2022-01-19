@@ -55,7 +55,7 @@ _Note: all of these support a date as the first parameter, in the form `2014-06-
 * `streak` - (supports `--help`) starting with today's journal, looks at every day, counting backwards, until it finds a day with no journal. Then it reports the number of days with journals.
 * `rateOfJournals` - (supports `--help`) by default, calculates the percentage of journal entries so far this year.
 * `thisDayInHistory` - (supports `--help`) with no arguments, lists all the journals on this day of the year, as far back as 1997.
-* `find_tarot` - (supports `--help`) finds tarot readings in your thoughts files, summarizing the cards found
+* `find_tarot` - (supports `--help`) finds tarot readings in your thoughts files, summarizing the cards found. Just use the templates in [info/tarot-templates.txt](https://github.com/scottnonnenberg/thoughts-system/blob/main/info/tarot-templates.txt)!
 * `emotions` - uses the [Regressive Imagery Dictionary](http://enjoymentland.com/2010/01/11/the-regressive-imagery-dictionary/) ([via `ridict` node module](https://github.com/frankamp/node-ridict)) to analyze today's journal entry. Or, you can provide a path to a file as the first argument.
 * `markov` - generates a markov chain-based gibberish string based on today's journal entry ([via `markov` node module](https://github.com/substack/node-markov))
 * `dayOfWeekInHistory` - (supports `--help`) fun little script that tells you the day of week in history for this date
