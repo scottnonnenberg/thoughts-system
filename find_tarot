@@ -1,0 +1,255 @@
+#! /usr/bin/env node
+
+'use strict';
+
+var fs = require('graceful-fs');
+var _ = require('lodash');
+var commander = require('commander');
+
+
+// meant to be used like this:
+//   find 2016/03_March | grep log\.txt$ | xargs ./find_tarot
+
+commander
+  .usage('[options] file1 file2\n\nTry it like this:\n  find 2016/03_March | grep log\\.txt$ | xargs ./find_tarot --single')
+  .option('-s, --single', 'Include single (daily) readings')
+  .option('-m, --multiple', 'Include multi-card readings')
+  .option('-d, --detail', 'Show per-card and entry details')
+  .parse(process.argv);
+
+var options = commander.opts();
+
+if (!options.single && !options.multiple) {
+  commander.outputHelp();
+  process.exit(1);
+}
+
+var findSingleCard = /^  Card: (.*?)( - (.*))?$/m;
+var cards = Object.create(null);
+
+var makeLookupFromArray = function(array) {
+  return _.chain(array)
+    .map(function(value, index) {
+      return [value, index];
+    })
+    .fromPairs()
+    .value();
+};
+
+var suitR = /(\w+) of (\w+)/;
+
+var suits = ['Major Arcana', 'Wands', 'Chalices', 'Swords', 'Pentacles'];
+var suitOrderByName = makeLookupFromArray(suits);
+
+var suitRanks = [
+  'Ace',
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Ten',
+  'Knave',
+  'Knight',
+  'Queen',
+  'King'
+];
+var suitRankByName = makeLookupFromArray(suitRanks)
+
+var majors = [
+  'The Fool',
+  'The Magician',
+  'The High Priestess',
+  'The Empress',
+  'The Emperor',
+  'The Hierophant',
+  'The Lovers',
+  'The Chariot',
+  'Justice',
+  'The Hermit',
+  'The Wheel',
+  'Strength',
+  'The Hanged Man',
+  'Death',
+  'Temperance',
+  'The Devil',
+  'The Tower',
+  'The Star',
+  'The Moon',
+  'The Sun',
+  'Judgement',
+  'The World'
+];
+var majorRankByName = makeLookupFromArray(majors);
+
+var getSuit = function(name) {
+  var match = suitR.exec(name);
+  if (match) {
+    var suit = match[2];
+    var order = suitOrderByName[suit];
+    if (!_.isNumber(order)) {
+      throw new Error(`unrecognized suit: ${suit}`);
+    }
+    var rankName = match[1];
+    var rank = suitRankByName[rankName];
+    if (!_.isNumber(rank)) {
+      throw new Error(`unrecognized rank: ${rankName}`);
+    }
+
+    return {
+      name: suit,
+      order: order,
+      rankName: rankName,
+      rank: rank
+    }
+  }
+
+  var majorRank = majorRankByName[name];
+  if (!_.isNumber(majorRank)) {
+    throw new Error(`unrecognized major arcana: ${name}`);
+  }
+
+  return {
+    order: 0,
+    name: 'Major Arcana',
+    rank: majorRank
+  }
+};
+
+var addCard = function(name, path) {
+  if (!cards[name]) {
+    cards[name] = {
+      count: 0,
+      paths: [],
+      suit: getSuit(name)
+    };
+  }
+
+  var entry = cards[name];
+  entry.paths.push(path);
+  entry.count += 1;
+};
+
+var sections = [];
+
+commander.args.map(function(path) {
+  var contents = fs.readFileSync(path).toString();
+  var findTarot = /(\[[X ]\] )?(.*[tT]arot.*)\n((?:  .*\n|\n)+)/gm;
+
+  try {
+    var match;
+    var foundAny = false;
+
+    while (match = findTarot.exec(contents)) {
+      var found = false;
+      var title = match[2];
+      var entry = match[3];
+
+      if (options.single) {
+        var singleMatch = findSingleCard.exec(entry);
+        if (singleMatch) {
+          found = true;
+          sections.push(`${path} - single - ${title}`);
+          addCard(singleMatch[1], path);
+        }
+      }
+
+      if (options.multiple) {
+        var findMultipleCards = /^  [0-9]+\. (.*?)( - (.*))?$/gm;
+        var multipleMatch;
+        while (multipleMatch = findMultipleCards.exec(entry)) {
+          found = true;
+          sections.push(`${path} - multiple - ${title}`);
+          var description = multipleMatch[1];
+          var split = description.indexOf(' - ');
+          if (split < 0) {
+            split = description.length;
+          }
+          var card = description.slice(0, split);
+          addCard(card, path);
+        }
+      }
+
+      if (!found) {
+        sections.push(`${path} - no match - ${title}`);
+      }
+
+      if (found) {
+        foundAny = true;
+      }
+    }
+
+    if (!foundAny) {
+      sections.push(`${path} - no match in file!`);
+    }
+  }
+  catch(err) {
+    throw new Error(`problem with file ${path}: ${err.message}`);
+  }
+});
+
+var objectsArray = _.chain(cards)
+  .map(function(card, key) {
+    card.name = key;
+    if (card.suit.name == 'Major Arcana') {
+      card.name = `${card.name} (rank: ${card.suit.rank})`;
+    }
+    return card;
+  });
+
+if (options.detail) {
+  console.log('** Sections found');
+  console.log(sections.join('\n'));
+
+  var objectsByFrequency = _.chain(objectsArray)
+    .orderBy(['count', 'suit.order', 'suit.rank'], ['desc', 'asc', 'asc'])
+    .value();
+
+  console.log('\n** Objects by Frequency');
+  console.log(JSON.stringify(objectsByFrequency, null, '  '));
+  console.log();
+}
+
+var namesByFrequency = _.chain(objectsArray)
+  .orderBy(['count', 'suit.order', 'suit.rank'], ['desc', 'asc', 'asc'])
+  .map(function(card) {
+    return card.count + ' ' + card.name;
+  })
+  .join('\n')
+  .value();
+
+console.log('** By Frequency');
+console.log(namesByFrequency);
+
+var namesSorted = _.chain(objectsArray)
+  .sortBy(['suit.order','suit.rank'])
+  .map(function(card) {
+    return `${card.count} ${card.name}`;
+  })
+  .join('\n')
+  .value();
+
+console.log('\n** By Name');
+console.log(namesSorted);
+
+var namesSorted =  _.chain(objectsArray)
+  .groupBy(function(card) {
+    return card.suit.name;
+  })
+  .toPairs()
+  .sortBy('1.0.suit.order')
+  .map(function(pair) {
+    const name = pair[0];
+    const list = pair[1];
+    const total = _.reduce(list, (result, card) => result + card.count, 0);
+    return `${total} ${name} (${list.length} unique)`
+  })
+  .join('\n')
+  .value();
+
+console.log('\n** By Suit');
+console.log(namesSorted);

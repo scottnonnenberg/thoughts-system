@@ -1,0 +1,47 @@
+One-card tarot:
+  Card:
+  Meaning:
+
+  Story:
+
+
+Four-card spread tarot:
+  Question:
+
+  1.
+    (past or foundation)
+  2.
+    (present)
+  3.
+    (future)
+  4.
+    (overall lesson)
+
+  Story:
+
+
+Celtic Cross tarot:
+  Question:
+
+  1.
+    (present environment)
+  2.
+    (help or hinder)
+  3.
+    (root cause, unconscious influence)
+  4.
+    (past, receding)
+  5.
+    (goal, purpose, attitudes/beliefs)
+  6.
+    (future, approaching)
+  7.
+    (you, as you are or see yourself)
+  8.
+    (you as others see you, the environment)
+  9.
+    (guidance, key/overlooked factor)
+  10.
+    (outcome)
+
+  Story:
