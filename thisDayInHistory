@@ -124,8 +124,8 @@ for (var year = date.getFullYear(); year >= 1997; year--) {
 }
 
 if (options.editor) {
-  exec('subl .');
+  exec(`${process.env.EDITOR} .`);
   setTimeout(function() {
-    exec('subl ' + files.join(' '));
+    exec(`${process.env.EDITOR} ${files.join(' ')}`);
   }, 500);
 }
